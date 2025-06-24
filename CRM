@@ -1,0 +1,91 @@
+// CRM Platform UI - Inspired by Monday.com with Full Editability and Integrations
+
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+import { Phone, Mail, MessageSquare, Settings2 } from "lucide-react";
+
+export default function CRM() {
+  const [leadName, setLeadName] = useState("");
+  const [note, setNote] = useState("");
+  const [leads, setLeads] = useState([]);
+
+  const addLead = () => {
+    if (leadName) {
+      setLeads([...leads, { name: leadName, note }]);
+      setLeadName("");
+      setNote("");
+    }
+  };
+
+  return (
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-4">Real Estate CRM Dashboard</h1>
+      <Tabs defaultValue="leads">
+        <TabsList className="mb-6">
+          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+          <TabsTrigger value="leads">Leads</TabsTrigger>
+          <TabsTrigger value="transactions">Transactions</TabsTrigger>
+          <TabsTrigger value="tasks">Tasks</TabsTrigger>
+          <TabsTrigger value="automations">Automations</TabsTrigger>
+          <TabsTrigger value="integrations">Integrations</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="dashboard">
+          <Card><CardContent className="p-4">Welcome to your CRM dashboard. View analytics, quick links, and recent activity here.</CardContent></Card>
+        </TabsContent>
+
+        <TabsContent value="leads">
+          <Card className="mb-4">
+            <CardContent className="space-y-4 p-4">
+              <Input value={leadName} onChange={(e) => setLeadName(e.target.value)} placeholder="Enter lead name" />
+              <Textarea value={note} onChange={(e) => setNote(e.target.value)} placeholder="Lead notes" />
+              <Button onClick={addLead}>Add Lead</Button>
+            </CardContent>
+          </Card>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {leads.map((lead, idx) => (
+              <Card key={idx}><CardContent className="p-4 space-y-2"><p className="font-semibold">{lead.name}</p><p>{lead.note}</p></CardContent></Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="transactions">
+          <Card><CardContent className="p-4">Track ongoing deals, set milestones, and mark completions.</CardContent></Card>
+        </TabsContent>
+
+        <TabsContent value="tasks">
+          <Card><CardContent className="p-4">Manage daily to-dos, reminders, and tasks by property or client.</CardContent></Card>
+        </TabsContent>
+
+        <TabsContent value="automations">
+          <Card><CardContent className="p-4">Setup custom workflows, automated emails, reminders, and webhooks with Zapier.</CardContent></Card>
+        </TabsContent>
+
+        <TabsContent value="integrations">
+          <Card>
+            <CardContent className="p-4 space-y-2">
+              <p className="font-medium">Connected Services</p>
+              <ul className="list-disc pl-6">
+                <li>Microsoft Outlook / Calendar</li>
+                <li>Google Workspace</li>
+                <li>WhatsApp (via WhatsApp Business API)</li>
+                <li>Signal (via Signal-CLI)</li>
+                <li>Mailchimp</li>
+                <li>OpenAI ChatGPT API</li>
+                <li>OneKey MLS RETS/IDX</li>
+                <li>Zapier</li>
+                <li>Phone & Text via Twilio or JustCall</li>
+              </ul>
+              <Button variant="outline" className="mt-4">Manage Integrations</Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
